@@ -5,9 +5,9 @@ FROM python:3.10.8
 ################## METADATA ######################
 
 LABEL base_image="python:3.10.8"
-LABEL version="1"
+LABEL version="2"
 LABEL software="i2nca"
-LABEL software.version="0.3.0"
+LABEL software.version="0.3.1"
 LABEL about.summary="A mass spectrometry imaging tool bundle for preprocessing workflows"
 LABEL about.home="https://github.com/cKNUSPeR/i2nca"
 LABEL about.documentation="https://github.com/cKNUSPeR/i2nca"
@@ -27,7 +27,11 @@ RUN apt-get update && apt-get install -y \
     libgl1 \
     git \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g 1001 biodockergroup && \
+    useradd -g biodockergroup -u 1001 biodocker
+
 
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir numpy==1.24 && \
@@ -39,9 +43,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 RUN pip install git+https://github.com/cKNUSPeR/pyimzml.git#egg=pyimzml && \
     pip install git+https://github.com/cKNUSPeR/i2nca.git#egg=i2nca \
 
-RUN groupadd -g 1001 biodockergroup && \
-    useradd -g biodockergroup -u 1001 biodocker
 
 USER biodocker
+
+
 
 
